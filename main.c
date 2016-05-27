@@ -4,6 +4,10 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <SDL2/SDL.h>
+
+const int SCREEN_HEIGHT = 640;
+const int SCREEN_WIDTH = 480;
 
 void
 error(lua_State *L, char *msg)
@@ -69,6 +73,28 @@ main()
 
 
   lua_close(L);
+
+  SDL_Window* window = 0;
+  SDL_Surface* screenSurface = 0;
+
+  if(SDL_Init(SDL_INIT_VIDEO) < 0)
+  {
+    printf("SDL Could not initialize");
+  }
+  else
+  {
+    window = SDL_CreateWindow(
+        "Game", 
+        SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED,
+        SCREEN_HEIGHT,
+        SCREEN_WIDTH,
+        SDL_WINDOW_SHOWN);
+    screenSurface = SDL_GetWindowSurface(window);
+    SDL_FillRect(screenSurface, 0, SDL_MapRGB(screenSurface->format, 0x00, 0x00, 0x00));
+    SDL_UpdateWindowSurface(window);
+    SDL_Delay(2000);
+  }
 
   return(0);
 }
